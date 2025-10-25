@@ -3,12 +3,19 @@ import 'axios'
 import axios from "axios";
 import { useState, useEffect } from "react";
 
+interface img {
+    id: number,
+    filename: string,
+    date: Date,
+    user: string
+}
+
 export const Home: React.FC = () => {
 
     const [refresh, setRefresh] = useState<boolean>(false);
     const [file, setFile] = useState<File>();
 
-    const [sources, setSources] = useState<string[]>([]);
+    const [sources, setSources] = useState<img[]>([]);
 
     const [user, setUser] = useState<string>("");
 
@@ -37,7 +44,7 @@ export const Home: React.FC = () => {
                     console.log(res.data);
 
                     res.data.forEach(img => {
-                        setSources(sources => [...sources, img.Image]);
+                        setSources(sources => [...sources, {id: img.id, filename: img.Image, date: img.date, user: img.user}]);
                     });
                 })
                 .then(data => console.log("Retrieved images: " + data))
@@ -53,12 +60,19 @@ export const Home: React.FC = () => {
     }
 
     const handleUpload = () => {
+
+        if (file == null) {
+            return;
+        }
+
         const formdata = new FormData();
         formdata.append('image', file as Blob);
         formdata.append('user', user as string)
 
         const date = new Date(file.lastModified);
-        console.log(date);
+        const dateString = date.toISOString().slice(0,19).replace('T',' ');
+        //console.log(dateString);
+        formdata.append('date', dateString as string)
 
         axios.post('http://localhost:8081/upload', formdata)
             .then(res => {
@@ -76,10 +90,14 @@ export const Home: React.FC = () => {
                 Hello World!
             </title>
             <body>
-                <div className="flex flex-col">
-                    <h1 className="text-center text-2xl">
-                        Testing
-                    </h1>
+                <div className="flex flex-col min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 p-6">
+                    <div className="max-w-7xl mx-auto">
+                        <header className="text-center mb-8">
+                        <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+                            Brofie
+                        </h1>
+                        </header>
+                    </div>
                     <div className="flex justify-center items-center h-20 bg-red-200 text-center my-5 mx-2 border-r-2">
                         <h3 className="text-black font-bold">
                             <button
