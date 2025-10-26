@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const images = [
+const sampleImages = [
   {
     id: 1,
     url: 'https://images.unsplash.com/photo-1579546929662-711aa81148cf',
@@ -57,13 +57,13 @@ interface img {
 export const Gallery: React.FC<GalleryProps> = ({ sources }) => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-    const TODOimages = sources.map((pic) => {
+    const images = sources.map((pic) => {
         const source = "http://localhost:8081/images/" + pic.filename;
         
         return {
             id: pic.id,
             url: source,
-            date: pic.date
+            date: pic.date.toUTCString().slice(5,16),
         };
     });
 

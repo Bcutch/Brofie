@@ -46,7 +46,7 @@ app.get('/images', (req, res) => {
 app.post('/upload', upload.single('image'), (req, res) => {
     const image = req.file.filename;
  
-    db.query("INSERT INTO images (Image, username, date) VALUES (?, ?)", [image, req.body.user, req.body.date], (err, data) => {
+    db.query("INSERT INTO images (Image, username, date) VALUES (?, ?, ?)", [image, req.body.user, req.body.date], (err, data) => {
         if (err) {
             console.log(err);
             return res.json(err);
