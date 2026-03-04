@@ -58,7 +58,7 @@ export const Gallery: React.FC<GalleryProps> = ({ sources }) => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const images = sources.map((pic) => {
-        const source = "http://localhost:8081/images/" + pic.filename;
+        const source = "https://brophiebackend.vercel.app/images/" + pic.filename;
         
         return {
             id: pic.id,

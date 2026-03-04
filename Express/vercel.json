@@ -1,5 +1,4 @@
 {
     "version": 2,
-    "builds": [{ "src": "/server.js", "use": "@varcel/node" }],
-    "routes": [{ "src": "/(.*)", "dest": "server.js" }]
+    "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
 }

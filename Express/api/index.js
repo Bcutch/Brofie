@@ -35,6 +35,8 @@ app.post('/user', (req, res) => {
     return res.json({Status: 'Success', data: user})
 })
 
+app.get('/', (req, res) => res.send('Server running'));
+
 app.get('/images', (req, res) => {
     db.query("SELECT * FROM images", (err, data) => {
         if (err) return res.json(err);
