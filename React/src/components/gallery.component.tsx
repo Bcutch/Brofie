@@ -1,47 +1,47 @@
 import { useState } from "react";
 
-const sampleImages = [
-  {
-    id: 1,
-    url: 'https://images.unsplash.com/photo-1579546929662-711aa81148cf',
-    date: 'Purple Gradient',
-  },
-  {
-    id: 2,
-    url: 'https://images.unsplash.com/photo-1542736667-069246bdbc6d',
-    date: 'Lavender Fields',
-  },
-  {
-    id: 3,
-    url: 'https://images.unsplash.com/photo-1550684376-efcbd6e3f031',
-    date: 'Purple Flowers',
-  },
-  {
-    id: 4,
-    url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4',
-    date: 'Mountain Sunset'
-  },
-  {
-    id: 5,
-    url: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a',
-    date: 'Abstract Purple'
-  },
-  {
-    id: 6,
-    url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b',
-    date: 'Night Sky'
-  },
-  {
-    id: 7,
-    url: 'https://images.unsplash.com/photo-1491897554428-130a60dd4757',
-    date: 'Purple Texture'
-  },
-  {
-    id: 8,
-    url: 'https://images.unsplash.com/photo-1518623489648-a173ef7824f3',
-    date: 'Purple Landscape'
-  }
-];
+// const sampleImages = [
+//   {
+//     id: 1,
+//     url: 'https://images.unsplash.com/photo-1579546929662-711aa81148cf',
+//     date: 'Purple Gradient',
+//   },
+//   {
+//     id: 2,
+//     url: 'https://images.unsplash.com/photo-1542736667-069246bdbc6d',
+//     date: 'Lavender Fields',
+//   },
+//   {
+//     id: 3,
+//     url: 'https://images.unsplash.com/photo-1550684376-efcbd6e3f031',
+//     date: 'Purple Flowers',
+//   },
+//   {
+//     id: 4,
+//     url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4',
+//     date: 'Mountain Sunset'
+//   },
+//   {
+//     id: 5,
+//     url: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a',
+//     date: 'Abstract Purple'
+//   },
+//   {
+//     id: 6,
+//     url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b',
+//     date: 'Night Sky'
+//   },
+//   {
+//     id: 7,
+//     url: 'https://images.unsplash.com/photo-1491897554428-130a60dd4757',
+//     date: 'Purple Texture'
+//   },
+//   {
+//     id: 8,
+//     url: 'https://images.unsplash.com/photo-1518623489648-a173ef7824f3',
+//     date: 'Purple Landscape'
+//   }
+// ];
 
 interface GalleryProps {
     sources: img[];

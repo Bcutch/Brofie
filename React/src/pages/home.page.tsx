@@ -10,6 +10,13 @@ interface img {
     user: string
 }
 
+interface ApiImageData {
+    id: number;
+    Image: string;
+    date: string;
+    user: string;
+}
+
 export const Home: React.FC = () => {
 
     const [refresh, setRefresh] = useState<boolean>(false);
@@ -38,7 +45,7 @@ export const Home: React.FC = () => {
             .then(res => {
                 console.log(res.data);
 
-                res.data.forEach(img => {
+                res.data.forEach((img: ApiImageData) => {
                     setSources(sources => [...sources, {id: img.id, filename: img.Image, date: new Date(img.date), user: img.user}]);
                 });
             })
@@ -55,7 +62,7 @@ export const Home: React.FC = () => {
                 .then(res => {
                     console.log(res.data);
 
-                    res.data.forEach(img => {
+                    res.data.forEach((img: ApiImageData) => {
                         setSources(sources => [...sources, {id: img.id, filename: img.Image, date: new Date(img.date), user: img.user}]);
                     });
                 })
@@ -77,8 +84,10 @@ export const Home: React.FC = () => {
         setSources(shuffled);
     }
 
-    const handleFile = (e) => {
-        setFile(e.target.files[0]);
+    const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setFile(e.target.files[0]);
+        }
     }
 
     const handleUpload = () => {
