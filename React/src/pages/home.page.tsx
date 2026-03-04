@@ -125,7 +125,7 @@ export const Home: React.FC = () => {
                     <div className="max-w-7xl mx-auto">
                         <header className="text-center mb-8">
                         <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 title">
-                            Brofie
+                            Brophie
                         </h1>
                         </header>
                     </div>
