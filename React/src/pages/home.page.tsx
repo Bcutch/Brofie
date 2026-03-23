@@ -60,7 +60,7 @@ export const Home: React.FC = () => {
         setSources([]);
         
         if (refresh) {
-            axios.get('http://localhost:8081/images')
+            axios.get('https://brophiebackend.vercel.app/images')
                 .then(res => {
                     console.log(res.data.images);
 
@@ -107,7 +107,7 @@ export const Home: React.FC = () => {
         //console.log(dateString);
         formdata.append('date', dateString as string)
 
-        axios.post('http://localhost:8081/upload', formdata)
+        axios.post('https://brophiebackend.vercel.app/upload', formdata)
             .then(res => {
                 if (res.data.Status == 'Success') {
                     console.log('Upload Successful:' + res.data.data)
