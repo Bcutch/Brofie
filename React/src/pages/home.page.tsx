@@ -32,7 +32,7 @@ export const Home: React.FC = () => {
     useEffect(() => {
         setUser("BRETT");
 
-        axios.post('http://brophiebackend.vercel.app/user', {
+        axios.post('https://brophiebackend.vercel.app/user', {
             user: 'BRETT'
         })
             .then(res => {
@@ -43,7 +43,7 @@ export const Home: React.FC = () => {
                 }
             });
         
-        axios.get('http://brophiebackend.vercel.app/images')
+        axios.get('https://brophiebackend.vercel.app/images')
             .then(res => {
                 console.log(res.data.images);
 
