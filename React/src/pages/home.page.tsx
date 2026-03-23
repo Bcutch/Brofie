@@ -7,14 +7,16 @@ interface img {
     id: number,
     filename: string,
     date: Date,
-    user: string
+    user: string,
+    image: string
 }
 
 interface ApiImageData {
-    id: number;
-    Image: string;
-    date: string;
-    user: string;
+    id: number,
+    image: string,
+    date: string,
+    user: string,
+    imageUrl: string
 }
 
 export const Home: React.FC = () => {
@@ -30,7 +32,7 @@ export const Home: React.FC = () => {
     useEffect(() => {
         setUser("BRETT");
 
-        axios.post('https://brophiebackend.vercel.app/user', {
+        axios.post('http://localhost:8081/user', {
             user: 'BRETT'
         })
             .then(res => {
@@ -41,12 +43,12 @@ export const Home: React.FC = () => {
                 }
             });
         
-        axios.get('https://brophiebackend.vercel.app/images')
+        axios.get('http://localhost:8081/images')
             .then(res => {
-                console.log(res.data);
+                console.log(res.data.images);
 
-                res.data.forEach((img: ApiImageData) => {
-                    setSources(sources => [...sources, {id: img.id, filename: img.Image, date: new Date(img.date), user: img.user}]);
+                res.data.images.forEach((img: ApiImageData) => {
+                    setSources(sources => [...sources, {id: img.id, filename: img.image, date: new Date(img.date), user: img.user, image: img.imageUrl}]);
                 });
             })
             .then(data => console.log("Retrieved images: " + data))
@@ -58,12 +60,12 @@ export const Home: React.FC = () => {
         setSources([]);
         
         if (refresh) {
-            axios.get('https://brophiebackend.vercel.app/images')
+            axios.get('http://localhost:8081/images')
                 .then(res => {
-                    console.log(res.data);
+                    console.log(res.data.images);
 
-                    res.data.forEach((img: ApiImageData) => {
-                        setSources(sources => [...sources, {id: img.id, filename: img.Image, date: new Date(img.date), user: img.user}]);
+                    res.data.images.forEach((img: ApiImageData) => {
+                        setSources(sources => [...sources, {id: img.id, filename: img.image, date: new Date(img.date), user: img.user, image: img.imageUrl}]);
                     });
                 })
                 .then(data => console.log("Retrieved images: " + data))
@@ -101,11 +103,11 @@ export const Home: React.FC = () => {
         formdata.append('user', user as string)
 
         const date = new Date(file.lastModified);
-        const dateString = date.toISOString().slice(0,19).replace('T',' ');
+        const dateString = date.toISOString().slice(0,10);
         //console.log(dateString);
         formdata.append('date', dateString as string)
 
-        axios.post('https://brophiebackend.vercel.app/upload', formdata)
+        axios.post('http://localhost:8081/upload', formdata)
             .then(res => {
                 if (res.data.Status == 'Success') {
                     console.log('Upload Successful:' + res.data.data)
