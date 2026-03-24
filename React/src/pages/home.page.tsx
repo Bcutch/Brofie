@@ -114,6 +114,8 @@ export const Home: React.FC = () => {
                 } else {
                     console.log('Upload Failed:' + res.data.err)
                 }
+            }).catch((err)=>{
+                console.log(err)
             });
     }
 
