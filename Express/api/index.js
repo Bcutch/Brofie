@@ -77,7 +77,7 @@ app.post('/user', (req, res) => {
 
 app.get('/', (req, res) => {
     
-    res.send('Server running')
+    res.send('Server Successfully running')
 });
 
 app.get('/images', async (req, res) => {
