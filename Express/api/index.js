@@ -9,8 +9,6 @@ const presigner = require('@aws-sdk/s3-request-presigner')
 const dotenv = require('dotenv')
 const pg = require('pg')
 
-dotenv.config()
-
 const bucketName = process.env.BUCKET_NAME
 const bucketRegion = process.env.BUCKET_REGION
 const accessKey = process.env.ACCESS_KEY
