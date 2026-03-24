@@ -128,7 +128,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
     const sql = "INSERT INTO images (image, username, imagedate) VALUES ('" + name + "','" + req.body.user + "','" + req.body.date + "')"
 
-    await db.query(sql, (err,res)=>{
+    db.query(sql, (err,result)=>{
         if (err) {
             console.log('Query: ' + sql + 'FAILED')
             console.log(err)
