@@ -92,7 +92,7 @@ export const Home: React.FC = () => {
         }
     }
 
-    const handleUpload = () => {
+    const handleUpload = async () => {
 
         if (file == null) {
             return;
@@ -107,7 +107,7 @@ export const Home: React.FC = () => {
         //console.log(dateString);
         formdata.append('date', dateString as string)
 
-        axios.post('https://brophiebackend.vercel.app/upload', formdata)
+        await axios.post('https://brophiebackend.vercel.app/upload', formdata)
             .then(res => {
                 if (res.data.Status == 'Success') {
                     console.log('Upload Successful:' + res.data.data)
