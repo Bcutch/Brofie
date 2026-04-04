@@ -25,6 +25,7 @@ export const Home: React.FC = () => {
     const auth = getAuth();
     const user = auth.currentUser;
     const name = user?.displayName
+    const uid = user?.uid
 
     const navigate = useNavigate()
 
@@ -40,7 +41,7 @@ export const Home: React.FC = () => {
             navigate("/")
         }
 
-        axios.get('https://brophiebackend.vercel.app/images/' + user!.uid)
+        axios.get('https://brophiebackend.vercel.app/images/' + uid)
             .then(res => {
                 console.log(res.data.images);
 
@@ -57,7 +58,7 @@ export const Home: React.FC = () => {
         setSources([]);
         
         if (refresh) {
-            axios.get('https://brophiebackend.vercel.app/images')
+            axios.get('https://brophiebackend.vercel.app/images/' + uid)
                 .then(res => {
                     console.log(res.data.images);
 
@@ -98,7 +99,7 @@ export const Home: React.FC = () => {
         const formdata = new FormData();
         formdata.append('image', file as Blob)
         formdata.append('user', name as string)
-        formdata.append('uid', user!.uid as string)
+        formdata.append('uid', uid as string)
 
         const date = new Date(file.lastModified);
         const dateString = date.toISOString().slice(0,10);
