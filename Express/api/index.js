@@ -76,7 +76,7 @@ app.get('/images/:uid', async (req, res) => {
 
     const { uid } = req.params
 
-    query("SELECT * FROM images NATURAL JOIN userToImage WHERE uid = " + uid + ";", async (results) => {
+    query("SELECT * FROM images NATURAL JOIN usertoimage WHERE uid = '" + uid + "';", async (results) => {
         if (!results) return res.json({});
 
         console.log(results.rows)
@@ -133,7 +133,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         }
     })
 
-    const sql2 = "INSERT INTO userToImage (image, uid) VALUES ('" + name + "','" + req.body.uid + "')"
+    const sql2 = "INSERT INTO usertoimage (image, uid) VALUES ('" + name + "','" + req.body.uid + "')"
 
     await db.query(sql2, (err,result)=>{
         if (err) {
