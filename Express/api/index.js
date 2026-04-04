@@ -125,7 +125,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
     const sql = "INSERT INTO images (image, username, imagedate) VALUES ('" + name + "','" + req.body.user + "','" + req.body.date + "')"
 
-    db.query(sql, (err,result)=>{
+    await db.query(sql, (err,result)=>{
         if (err) {
             console.log('Query: ' + sql + 'FAILED on images')
             console.log(err)
@@ -135,14 +135,14 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
     const sql2 = "INSERT INTO userToImage (image, uid) VALUES ('" + name + "','" + req.body.uid + "')"
 
-    db.query(sql2, (err,result)=>{
+    await db.query(sql2, (err,result)=>{
         if (err) {
             console.log('Query: ' + sql + 'FAILED on userToImage')
             console.log(err)
             return res.json({})
         }
     })
-    
+
     return res.json({Status: 'Success', data: req.file.filename})
 })
 
