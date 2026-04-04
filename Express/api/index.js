@@ -67,19 +67,16 @@ function query(sql, dostuff) {
     })
 }
 
-app.post('/user', (req, res) => {
-    user = req.body.user;
-
-    return res.json({Status: 'Success', data: user})
-})
-
 app.get('/', (req, res) => {
     
     res.send('Server Successfully running')
 });
 
-app.get('/images', async (req, res) => {
-    query("SELECT * FROM images", async (results) => {
+app.get('/images/:uid', async (req, res) => {
+
+    const { uid } = req.params
+
+    query("SELECT * FROM images NATURAL JOIN userToImage WHERE uid = " + uid + ";", async (results) => {
         if (!results) return res.json({});
 
         console.log(results.rows)
@@ -130,14 +127,23 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
     db.query(sql, (err,result)=>{
         if (err) {
-            console.log('Query: ' + sql + 'FAILED')
+            console.log('Query: ' + sql + 'FAILED on images')
             console.log(err)
             return res.json({})
-        } else {
-            return res.json({Status: 'Success', data: req.file.filename})
         }
     })
 
+    const sql2 = "INSERT INTO userToImage (image, uid) VALUES ('" + name + "','" + req.body.uid + "')"
+
+    db.query(sql2, (err,result)=>{
+        if (err) {
+            console.log('Query: ' + sql + 'FAILED on userToImage')
+            console.log(err)
+            return res.json({})
+        }
+    })
+    
+    return res.json({Status: 'Success', data: req.file.filename})
 })
 
 app.listen(8081, ()=>{
