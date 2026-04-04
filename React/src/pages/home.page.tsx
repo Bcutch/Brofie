@@ -1,7 +1,8 @@
 import { Gallery } from "../components/gallery.component"
-import 'axios'
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 interface img {
     id: number,
@@ -21,28 +22,24 @@ interface ApiImageData {
 
 export const Home: React.FC = () => {
 
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const name = user?.displayName
+
+    const navigate = useNavigate()
+
     const [refresh, setRefresh] = useState<boolean>(false);
     const [file, setFile] = useState<File>();
 
     const [sources, setSources] = useState<img[]>([]);
-
-    const [user, setUser] = useState<string>("");
     const [about, setAbout] = useState(false);
 
     useEffect(() => {
-        setUser("BRETT");
 
-        axios.post('https://brophiebackend.vercel.app/user', {
-            user: 'BRETT'
-        })
-            .then(res => {
-                if (res.data.Status == 'Success') {
-                    console.log('User Set Successfully: ' + res.data.data)
-                } else {
-                    console.log('User Set Failed')
-                }
-            });
-        
+        if (getAuth().currentUser == null) {
+            navigate("/")
+        }
+
         axios.get('https://brophiebackend.vercel.app/images')
             .then(res => {
                 console.log(res.data.images);
@@ -52,11 +49,11 @@ export const Home: React.FC = () => {
                 });
             })
             .then(data => console.log("Retrieved images: " + data))
-            .catch(err => console.log("Couldn't get images: " + err));
+            .catch(err => console.log("Couldn't get images: " + err))
+
     }, []);
 
     useEffect(() => {
-
         setSources([]);
         
         if (refresh) {
@@ -100,7 +97,7 @@ export const Home: React.FC = () => {
 
         const formdata = new FormData();
         formdata.append('image', file as Blob);
-        formdata.append('user', user as string)
+        formdata.append('user', user!.uid as string)
 
         const date = new Date(file.lastModified);
         const dateString = date.toISOString().slice(0,10);
@@ -122,15 +119,15 @@ export const Home: React.FC = () => {
     return (
         <>
             <title>
-                Hello World!
+                Brophie!
             </title>
             <body>
                 <div className="flex flex-col min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 p-6">
                     <div className="max-w-7xl mx-auto">
                         <header className="text-center mb-8">
-                        <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 title">
-                            Brophie
-                        </h1>
+                            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 title">
+                                Welcome {name}
+                            </h1>
                         </header>
                     </div>
                     <div className="flex justify-center items-center h-20 bg-purple-200 text-center my-5 mx-2 border-r-2">
@@ -166,6 +163,15 @@ export const Home: React.FC = () => {
                             About Brofie!
                         </button>
                     </div>
+                    <div className="flex mt-5 justify-end items-end">
+                        <button className="w-30 text-red-300" onClick={()=>{
+                            signOut(auth).then(() => {
+                                navigate("/")
+                            })
+                        }}>
+                            Sign Out
+                        </button>
+                    </div>
                     {about && (
                         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 z-50">
                             <div className="max-w-4xl max-h-full bg-gradient-to-br from-purple-800 to-indigo-900 rounded-2xl overflow-hidden border border-purple-500">
@@ -180,12 +186,14 @@ export const Home: React.FC = () => {
                                     </button>
                                     <div className="p-6 pt-15">
                                         <p>
-                                            This project was made for my wonderful girlfriend Sophie (yes I know the 
-                                            Brofie is spelt different). She's been my rock and my dance partner for 
+                                            This project was made for my wonderful girlfriend Sophie. She's been my rock and my dance partner for 
                                             a year now and I wanted to make my personal project something I think she 
                                             would like to use! Although I'm sure it will be enjoyable for anyone to use. 
                                             If Sophie is reading this, I love you. Thank you for everything that has 
-                                            passed and everything to come. - Brettan Cutchall
+                                            passed and everything to come. 
+                                        </p>
+                                        <p>
+                                            - Brettan Cutchall
                                         </p>
                                     </div>
                                 </div>
