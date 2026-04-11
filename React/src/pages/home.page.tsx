@@ -186,7 +186,7 @@ export const Home: React.FC = () => {
                             
                         </div>
                         <button className="w-50" onClick={()=>setAbout(true)}>
-                            About Brofie!
+                            About Brophie!
                         </button>
                     </div>
                     <div className="flex mt-5 justify-end items-end">
