@@ -96,7 +96,7 @@ export const Home: React.FC = () => {
             return;
         }
 
-        const formdata = new FormData();
+        const formdata = new FormData()
         formdata.append('image', file as Blob)
         formdata.append('user', name as string)
         formdata.append('uid', uid as string)
@@ -110,12 +110,34 @@ export const Home: React.FC = () => {
             .then(res => {
                 if (res.data.Status == 'Success') {
                     console.log('Upload Successful:' + res.data.data)
+
+                    setRefresh(true)
                 } else {
                     console.log('Upload Failed:' + res.data.err)
                 }
             }).catch((err)=>{
                 console.log(err)
-            });
+            })
+    }
+
+    const handleDelete = (id: number) => {
+
+        const imgid = id.toString()
+
+        axios.post('https://brophiebackend.vercel.app/delete', {id: imgid})
+            .then(res => {
+                if (res.data.Status == 'Success') {
+                    console.log('Delete Successful:' + res.data.data)
+
+                    setRefresh(true)
+                } else {
+                    console.log('Delete Failed:' + res.data.err)
+                }
+            }).catch((err)=>{
+                console.log(err)
+            })
+        
+        
     }
 
     return (
@@ -153,6 +175,8 @@ export const Home: React.FC = () => {
                     <div className="h-full justify-center items-center text-center my-5 mx-2 border-r-2">
                         <Gallery 
                             sources={sources}
+                            onDelete={handleDelete}
+                            refresh={() => setRefresh(true)}
                         />
                     </div>
                     <div className="flex justify-between items-center">

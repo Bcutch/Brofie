@@ -146,6 +146,57 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     return res.json({Status: 'Success', data: req.file.filename})
 })
 
+app.post('/delete', async (req, res) => {
+
+    const sql = "SELECT * FROM images WHERE id=" + req.body.id + ";"
+
+    db.query(sql, async (err,result)=>{
+        if (err) {
+            console.log('Query: ' + sql + ' FAILED')
+            console.log(err)
+
+            return res.json({Status: 'Failed', err: "Couldn't find image to delete"})
+        } else {
+
+            const imageName = result.rows[0].image
+
+            const params = {
+                Bucket: bucketName,
+                Key: imageName
+            }
+
+            const response = await s3.send(new S3Cl.DeleteObjectCommand(params))
+
+            const sql2 = "DELETE FROM images WHERE image = '" + imageName + "';"
+                
+            db.query(sql2, async (err,result)=>{
+                if (err) {
+                    console.log('Query: ' + sql2 + 'FAILED')
+                    console.log(err)
+
+                    return res.json({Status: 'Failed', err: "Failed images sql delete"})
+                } else {
+
+                    const sql3 = "DELETE FROM usertoimage WHERE image='" + imageName + "';"
+            
+                    db.query(sql3, async (err,result)=>{
+                        if (err) {
+                            console.log('Query: ' + sql3 + 'FAILED')
+                            console.log(err)
+
+                            return res.json({Status: 'Failed', err: "Failed usertoimage sql delete"})
+                        } else {
+                            return res.json({Status: 'Success', data: imageName})
+                        }
+                    })
+                    
+                }
+            })
+            
+        }
+    })
+})
+
 app.listen(8081, ()=>{
     console.log("Express server listening on port 8081");
 })

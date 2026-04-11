@@ -1,7 +1,9 @@
 import { useState } from "react";
 
 interface GalleryProps {
-    sources: img[];
+    sources: img[],
+    refresh: () => void,
+    onDelete: (id: number) => void
 }
 
 interface img {
@@ -12,16 +14,32 @@ interface img {
     image: string
 }
 
-export const Gallery: React.FC<GalleryProps> = ({ sources }) => {
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+interface imageInfo {
+    id: number,
+    url: string,
+    date: string
+}
+
+export const Gallery: React.FC<GalleryProps> = ({ 
+    sources,
+    onDelete,
+    refresh
+}) => {
+    const [selectedImage, setSelectedImage] = useState<imageInfo | null>(null)
 
     const images = sources.map((pic) => {
         return {
             id: pic.id,
             url: pic.image,
             date: pic.date.toUTCString().slice(5,16),
-        };
-    });
+        }
+    })
+
+    const handleDelete = async () => {
+        await onDelete(selectedImage!.id)
+        setSelectedImage(null)
+        refresh()
+    }
 
     return (
         <>
@@ -31,7 +49,7 @@ export const Gallery: React.FC<GalleryProps> = ({ sources }) => {
                         <div
                             key={image.id}
                             className="group cursor-pointer transform hover:scale-105 transition-all duration-300"
-                            onClick={() => setSelectedImage(image.url)}
+                            onClick={() => setSelectedImage(image)}
                         >
                             <div className="bg-gradient-to-br from-purple-600 to-indigo-700 rounded-xl p-1 shadow-2xl">
                                 <div className="relative overflow-hidden rounded-lg aspect-square">
@@ -83,14 +101,22 @@ export const Gallery: React.FC<GalleryProps> = ({ sources }) => {
                                 </svg>
                             </button>
                             <img
-                                src={selectedImage}
+                                src={selectedImage.url}
                                 alt="Enlarged view"
                                 className="w-full max-h-[70vh] object-contain"
                             />
                             <div className="p-6">
                                 <h2 className="text-2xl font-bold text-white mb-2">
-                                    {images.find(img => img.url === selectedImage)?.date || 'Image'}
+                                    {images.find(img => img.url === selectedImage.url)?.date || 'Image'}
                                 </h2>
+                            </div>
+                            <div className="flex items-end justify-end pb-5 px-5">
+                                <button
+                                    onClick={handleDelete}
+                                    className="w-25 h-8 bg-red-700/80 hover:bg-red-600 rounded-full flex items-center justify-center text-white transition-colors duration-200 backdrop-blur-sm"
+                                >
+                                    Delete
+                                </button>
                             </div>
                         </div>
                     </div>
